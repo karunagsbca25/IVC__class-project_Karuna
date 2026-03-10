@@ -1,0 +1,438 @@
+
+<!-- create a restaurant menu that shows all the items of the restaurant along with their prices and descriptions. 
+The menu should be organized by categories such as appetizers, main courses, desserts, and beverages.
+Each item should have a clear name, a detailed description, and a prominently displayed price. 
+Also to book the reserveation for the restaurant, you can include a reservation form that allows customers to select the date,
+time, and number of guests. The form should also have a submit button that sends the reservation details to the restaurant's email
+or database for processing. Additionally, you can include a section for customer reviews and ratings to provide feedback on the 
+dining experience. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu & Reservations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        nav a:hover {
+            background-color: #667eea;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .menu-category {
+            background: white;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .menu-category h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .menu-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .item-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .item-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .item-description {
+            color: #666;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+        .reservation-form, .reviews-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 30px 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        }
+        button {
+            background-color: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #764ba2;
+        }
+        .review {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .review-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .review-rating {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .review-text {
+            color: #666;
+            font-style: italic;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🍽️ Culinary Delight Restaurant</h1>
+        <p>Experience the finest dining</p>
+    </header>
+
+    <nav>
+        <a onclick="showSection('menu')">Menu</a>
+        <a onclick="showSection('reservation')">Reservations</a>
+        <a onclick="showSection('reviews')">Reviews</a>
+    </nav>
+
+    <div class="container">
+        <!-- Menu Section -->
+        <div id="menu" class="section active">
+            <!-- Appetizers -->
+            <div class="menu-category">
+                <h2>🥗 Appetizers</h2>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Bruschetta al Pomodoro</span>
+                        <span class="item-price">$8.99</span>
+                    </div>
+                    <div class="item-description">Crispy toasted bread topped with fresh tomatoes, garlic, basil, and olive oil</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Shrimp Tempura</span>
+                        <span class="item-price">$10.99</span>
+                    </div>
+                    <div class="item-description">Lightly battered and fried shrimp served with sweet and spicy dipping sauce</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Cheese & Charcuterie Board</span>
+                        <span class="item-price">$16.99</span>
+                    </div>
+                    <div class="item-description">Selection of premium cheeses, cured meats, nuts, and seasonal fruits</div>
+                </div>
+            </div>
+
+            <!-- Main Courses -->
+            <div class="menu-category">
+                <h2>🍖 Main Courses</h2>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Grilled Salmon Fillet</span>
+                        <span class="item-price">$24.99</span>
+                    </div>
+                    <div class="item-description">Wild-caught salmon with lemon butter sauce, served with roasted vegetables and seasonal sides</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Slow-Cooked Beef Tenderloin</span>
+                        <span class="item-price">$32.99</span>
+                    </div>
+                    <div class="item-description">Premium cut beef cooked to perfection, topped with red wine reduction and served with mashed potatoes</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Vegetarian Risotto</span>
+                        <span class="item-price">$18.99</span>
+                    </div>
+                    <div class="item-description">Creamy arborio rice with mushrooms, spinach, parmesan, and truffle oil</div>
+                </div>
+            </div>
+
+            <!-- Desserts -->
+            <div class="menu-category">
+                <h2>🍰 Desserts</h2>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Chocolate Lava Cake</span>
+                        <span class="item-price">$9.99</span>
+                    </div>
+                    <div class="item-description">Warm chocolate cake with molten center, served with vanilla ice cream</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Tiramisu</span>
+                        <span class="item-price">$8.99</span>
+                    </div>
+                    <div class="item-description">Classic Italian dessert with layers of mascarpone cream and espresso-soaked ladyfingers</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Strawberry Cheesecake</span>
+                        <span class="item-price">$10.99</span>
+                    </div>
+                    <div class="item-description">Rich cheesecake with fresh strawberry compote and graham cracker crust</div>
+                </div>
+            </div>
+
+            <!-- Beverages -->
+            <div class="menu-category">
+                <h2>☕ Beverages</h2>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">House Wine Selection</span>
+                        <span class="item-price">$7.99</span>
+                    </div>
+                    <div class="item-description">Choice of red, white, or rosé wines from renowned vineyards</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Craft Cocktails</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <div class="item-description">Signature cocktails crafted by our expert mixologists</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Freshly Brewed Coffee</span>
+                        <span class="item-price">$3.99</span>
+                    </div>
+                    <div class="item-description">Premium espresso-based coffee drinks and specialty beverages</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservation Section -->
+        <div id="reservation" class="section">
+            <div class="reservation-form">
+                <h2>Make a Reservation</h2>
+                <form id="reservationForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Reservation Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Reservation Time</label>
+                        <input type="time" id="time" name="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Number of Guests</label>
+                        <select id="guests" name="guests" required>
+                            <option value="">Select guests</option>
+                            <option value="1">1 Guest</option>
+                            <option value="2">2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                            <option value="5">5 Guests</option>
+                            <option value="6">6 Guests</option>
+                            <option value="7">7+ Guests</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="special">Special Requests</label>
+                        <textarea id="special" name="special" rows="4" placeholder="Any dietary restrictions or special occasions?"></textarea>
+                    </div>
+                    <button type="submit">Book Reservation</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div id="reviews" class="section">
+            <div class="reviews-section">
+                <h2>Customer Reviews</h2>
+                
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-name">Sarah Johnson</span>
+                        <span class="review-rating">⭐⭐⭐⭐⭐ 5/5</span>
+                    </div>
+                    <div class="review-text">"Absolutely amazing experience! The food was superb and the staff was incredibly attentive. Will definitely come back!"</div>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-name">Michael Chen</span>
+                        <span class="review-rating">⭐⭐⭐⭐ 4/5</span>
+                    </div>
+                    <div class="review-text">"Great restaurant with excellent food quality. Service was good, though it took a bit longer than expected during peak hours."</div>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-name">Emma Williams</span>
+                        <span class="review-rating">⭐⭐⭐⭐⭐ 5/5</span>
+                    </div>
+                    <div class="review-text">"The Grilled Salmon Fillet was perfectly cooked. Romantic ambiance and exceptional wine selection. Highly recommended!"</div>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-name">David Martinez</span>
+                        <span class="review-rating">⭐⭐⭐⭐ 4/5</span>
+                    </div>
+                    <div class="review-text">"Good food and pleasant atmosphere. The desserts are worth trying. Minor complaint about the noise level during dinner service."</div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px;">Leave Your Review</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewName">Your Name</label>
+                        <input type="text" id="reviewName" name="reviewName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Select rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                            <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                            <option value="3">⭐⭐⭐ 3 Stars</option>
+                            <option value="2">⭐⭐ 2 Stars</option>
+                            <option value="1">⭐ 1 Star</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewText">Your Review</label>
+                        <textarea id="reviewText" name="reviewText" rows="4" placeholder="Share your dining experience..." required></textarea>
+                    </div>
+                    <button type="submit">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Culinary Delight Restaurant. All rights reserved.</p>
+        <p>Contact: (555) 123-4567 | Email: info@culinarydelight.com</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your reservation! We will confirm your booking soon.');
+            this.reset();
+        });
+
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your review! Your feedback is valuable to us.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
